@@ -1,0 +1,39 @@
+.item {
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #d9d9d9;
+  box-shadow: 0px 5px 15px rgb(29 31 33 / 15%);
+  transition: all 0.1s ease-out 0.1s;
+  a {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #4d5156;
+    h3 {
+      margin-bottom: 20px;
+      transition: all 0.1s ease-out 0.1s;
+    }
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      color: #828282;
+      .name {
+        color: green;
+      }
+      span:first-child{
+        margin-right: 10px;
+      }
+    }
+    &:hover {
+      h3 {
+        color: black;
+      }
+    }
+  }
+  &:hover {
+    box-shadow: 0px 10px 25px rgb(29 31 33 / 25%);
+  }
+}
