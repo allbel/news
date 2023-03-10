@@ -1,20 +1,22 @@
 import { type AppActionsType, type AppThunkType } from './store'
 import newsService from '../services/news.service'
 import { type AxiosError } from 'axios'
-import { type Id, type INews } from '../types'
+import { type INews } from '../types'
 
 const initState = {
   items: [] as INews[],
   item: {} as INews,
-  isLoading: false,
+  isLoadingItems: false,
+  isLoadingItem: false,
   error: ''
 }
 
 type InitialStateType = typeof initState
 
 const SET_ITEMS = 'news/SET-ITEMS'
+const SET_IS_LOADING_ITEMS = 'news/SET-IS-LOADING-ITEMS'
+const SET_IS_LOADING_ITEM = 'news/SET-IS-LOADING-ITEM'
 const SET_ITEM = 'news/SET-ITEM'
-const SET_IS_LOADING = 'news/SET-IS-LOADING'
 const SET_ERROR = 'news/SET-ERROR'
 
 export const newsReducer = (state: InitialStateType = initState, action: AppActionsType): InitialStateType => {
@@ -23,8 +25,10 @@ export const newsReducer = (state: InitialStateType = initState, action: AppActi
       return { ...state, items: action.items }
     case SET_ITEM:
       return { ...state, item: action.item }
-    case SET_IS_LOADING:
-      return { ...state, isLoading: action.value }
+    case SET_IS_LOADING_ITEMS:
+      return { ...state, isLoadingItems: action.value }
+    case SET_IS_LOADING_ITEM:
+      return { ...state, isLoadingItem: action.value }
     case SET_ERROR:
       return { ...state, error: action.error }
     default:
@@ -39,16 +43,20 @@ export const setNewsAC = (items: INews[]) =>
 export const setNewsItemAC = (item: INews) =>
   ({ type: SET_ITEM, item } as const)
 
-export const setIsLoadingAC = (value: boolean) =>
-  ({ type: SET_IS_LOADING, value } as const)
+export const setIsLoadingItemsAC = (value: boolean) =>
+  ({ type: SET_IS_LOADING_ITEMS, value } as const)
+
+export const setIsLoadingItemAC = (value: boolean) =>
+  ({ type: SET_IS_LOADING_ITEM, value } as const)
 
 export const setErrorAC = (error: string) =>
   ({ type: SET_ERROR, error } as const)
 
+// thunk
 export const getNewsTC = (): AppThunkType =>
   async (dispatch, getState) => {
     try {
-      dispatch(setIsLoadingAC(true))
+      dispatch(setIsLoadingItemsAC(true))
       if (getState().news.error !== '') {
         dispatch(setErrorAC(''))
       }
@@ -60,14 +68,14 @@ export const getNewsTC = (): AppThunkType =>
       const error = e as Error | AxiosError
       dispatch(setErrorAC(error.message))
     } finally {
-      dispatch(setIsLoadingAC(false))
+      dispatch(setIsLoadingItemsAC(false))
     }
   }
 
 export const getNewsItemTC = (id: number): AppThunkType =>
   async (dispatch, getState) => {
     try {
-      dispatch(setIsLoadingAC(true))
+      dispatch(setIsLoadingItemAC(true))
       if (getState().news.error !== '') {
         dispatch(setErrorAC(''))
       }
@@ -77,25 +85,7 @@ export const getNewsItemTC = (id: number): AppThunkType =>
       const error = e as Error | AxiosError
       dispatch(setErrorAC(error.message))
     } finally {
-      dispatch(setIsLoadingAC(false))
-    }
-  }
-
-export const getCommentsTC = (commentsId: Id[]): AppThunkType =>
-  async (dispatch, getState) => {
-    try {
-      dispatch(setIsLoadingAC(true))
-      if (getState().news.error !== '') {
-        dispatch(setErrorAC(''))
-      }
-      const commentsPromises = commentsId.map(async (id: number) => await newsService.getItemById(id))
-      const comments = await Promise.all(commentsPromises)
-      return comments
-    } catch (e) {
-      const error = e as Error | AxiosError
-      dispatch(setErrorAC(error.message))
-    } finally {
-      dispatch(setIsLoadingAC(false))
+      dispatch(setIsLoadingItemAC(false))
     }
   }
 
@@ -103,5 +93,6 @@ export const getCommentsTC = (commentsId: Id[]): AppThunkType =>
 export type NewsActionsType =
   | ReturnType<typeof setNewsAC>
   | ReturnType<typeof setNewsItemAC>
-  | ReturnType<typeof setIsLoadingAC>
+  | ReturnType<typeof setIsLoadingItemsAC>
+  | ReturnType<typeof setIsLoadingItemAC>
   | ReturnType<typeof setErrorAC>

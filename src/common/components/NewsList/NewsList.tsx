@@ -5,10 +5,11 @@ import { getNewsTC } from '../../../store/news-reducer'
 import s from './NewsList.module.scss'
 import NewsItem from '../NewsItem/NewsItem'
 import Button from '../Button/Button'
+import Loader from '../Loader/Loader'
 
 const NewsList = () => {
   const news = useAppSelector(state => state.news.items)
-  const isLoading = useAppSelector(state => state.news.isLoading)
+  const isLoading = useAppSelector(state => state.news.isLoadingItems)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -22,7 +23,7 @@ const NewsList = () => {
   }, [])
 
   return (
-    <div>
+    <>
       <h1 className={s.title}>News</h1>
       <div className={s.boxButton}>
         <Button
@@ -32,12 +33,17 @@ const NewsList = () => {
           Refresh
         </Button>
       </div>
-      <ul className={s.list}>
-        {news.map(item =>
-          <NewsItem key={item.id} {...item}/>
-        )}
-      </ul>
-    </div>
+      <div>
+        {isLoading
+          ? <Loader/>
+          : <ul className={s.list}>
+            {news.map(item =>
+              <NewsItem key={item.id} {...item}/>
+            )}
+          </ul>
+        }
+      </div>
+    </>
   )
 }
 
