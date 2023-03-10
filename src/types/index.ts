@@ -1,3 +1,6 @@
+export type Id = number
+export type Type = 'story' | 'comment'
+
 export interface INews {
   by: string
   descendants: number
@@ -6,6 +9,17 @@ export interface INews {
   text: string
   time: number
   title: string
-  type: string
+  type: Type
   url: string
+  kids: Id[]
+}
+
+export interface IComment {
+  by: string
+  id: number
+  kids: Id[]
+  parent: string
+  text: string
+  time: number
+  type: Type
 }

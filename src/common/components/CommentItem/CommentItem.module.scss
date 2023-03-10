@@ -1,0 +1,27 @@
+.item {
+  margin-bottom: 20px;
+  .meta {
+    font-size: 12px;
+    color: #828282;
+    margin-bottom: 5px;
+    .toggle {
+      cursor: pointer;
+      &:hover {
+        color: black;
+      }
+    }
+    .more {
+      cursor: pointer;
+      &:hover {
+        color: black;
+        text-decoration: underline;
+      }
+    }
+    .name {
+      color: green;
+    }
+  }
+  .text {
+    font-size: 14px;
+  }
+}

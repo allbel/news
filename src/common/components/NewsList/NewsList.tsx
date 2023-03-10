@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
-import { useAppSelector } from '../../hooks/useAppSelector'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { getNewsTC } from '../../store/news-reducer'
+import { useAppSelector } from '../../../hooks/useAppSelector'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { getNewsTC } from '../../../store/news-reducer'
 import s from './NewsList.module.scss'
 import NewsItem from '../NewsItem/NewsItem'
+import Button from '../Button/Button'
 
 const NewsList = () => {
   const news = useAppSelector(state => state.news.items)
@@ -24,13 +25,12 @@ const NewsList = () => {
     <div>
       <h1 className={s.title}>News</h1>
       <div className={s.boxButton}>
-        <button
-          className={s.button}
+        <Button
           onClick={() => { dispatch(getNewsTC()) }}
           disabled={isLoading}
         >
           Refresh
-        </button>
+        </Button>
       </div>
       <ul className={s.list}>
         {news.map(item =>

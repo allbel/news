@@ -5,7 +5,7 @@ const newsService = {
     return await httpService.get(`newstories.json?print=pretty&orderBy="$key"&limitToFirst=${limit}`)
       .then(res => res.data)
   },
-  async getNewsById (id: number) {
+  async getItemById (id: number) {
     return await httpService.get(`item/${id}.json?print=pretty`)
       .then(res => res.data)
   }

@@ -4,6 +4,7 @@ import thunk, { type ThunkAction, type ThunkDispatch } from 'redux-thunk'
 
 const rootReducer = combineReducers({
   news: newsReducer
+  // comments: commentsReducer
 })
 
 const store = legacy_createStore(rootReducer, applyMiddleware(thunk))
@@ -19,5 +20,6 @@ AppActionsType
 
 export type AppActionsType =
   | NewsActionsType
+  // | CommentsActionsType
 
 export default store
